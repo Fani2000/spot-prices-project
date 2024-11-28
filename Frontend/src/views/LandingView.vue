@@ -17,7 +17,7 @@ import { type Spot } from '@/models/SpotModels'
 const spots = ref<Spot[]>([]);
 
 onMounted(async () => {
-    const { data } = await axios.get<Spot[]>('https://api.sharenet.co.za/api/v1/px2/spots');
+    const { data } = await axios.get<any>('https://api.sharenet.co.za/api/v1/px2/spots');
     console.log('Data: ', data.spots)
     spots.value = data.spots?.slice(0, 5);
 });

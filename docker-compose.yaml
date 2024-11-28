@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   postgres:
-    image: postgres:15
+    image: postgres:16
     container_name: postgres
     environment:
       POSTGRES_USER: postgres
@@ -15,7 +15,7 @@ services:
 
   backend:
     build:
-      context: ./backend
+      context: ./Backend
     container_name: node-backend
     depends_on:
       - postgres
@@ -29,10 +29,10 @@ services:
 
   frontend:
     build:
-      context: ./frontend
+      context: ./Frontend
     container_name: vue-frontend
     ports:
-      - "3000:3000"
+      - "8080:80"
     depends_on:
       - backend
 
