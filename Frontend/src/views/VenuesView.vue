@@ -7,19 +7,18 @@
           :key="venue.id"
         >
           {{ venue.name }} - {{ venue.date }}
-          <button v-if="venue.available" @click="bookWorkshop(venue.name, venue.date)">
-            Book
-          </button>
+          <Button label="Book" v-if="venue.available" @click="bookWorkshop(venue.name, venue.date)">
+          </Button>
           <span v-else>Sold Out</span>
         </li>
       </ul>
-      <router-link to="/">Back to Home</router-link>
     </div>
   </template>
   
   <script setup lang="ts">
   import { ref, computed } from 'vue';
   import axios from 'axios';
+  import { Button } from 'primevue'
   
   interface Venue {
     id: number;

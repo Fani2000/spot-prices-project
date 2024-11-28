@@ -1,35 +1,20 @@
 <template>
-    <table class="table-auto w-full">
-        <thead>
-            <tr>
-                <th @click="sort('fullName')">FullName</th>
-                <th @click="sort('categoryName')">FullName</th>
-                <th @click="sort('categoryId')">Price</th>
-                <th @click="sort('price')">Price</th>
-                <th @click="sort('pmove')">Price</th>
-                <th @click="sort('move')">Price</th>
-                <th @click="sort('ticketId')">Price</th>
-                <th>Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr v-for="(item, i) in sortedData" :key="i">
-                <td>{{ item.fullName }}</td>
-                <td>{{ item.categoryName }}</td>
-                <td>{{ item.categoryId }}</td>
-                <td>{{ item.price }}</td>
-                <td>{{ item.pmove }}</td>
-                <td>{{ item.move }}</td>
-                <td>{{ item.ticketId }}</td>
-                <td>{{ item.datetime }}</td>
-            </tr>
-        </tbody>
-    </table>
+  <DataTable :value="data" tableStyle="min-width: 50rem" stripedRows paginator :rows="10" :rowsPerPageOptions="[10, 20, 50]" size="small">
+    <Column field="code" header="Code"></Column>
+    <Column field="fullName" header="Full Name"></Column>
+    <Column field="categoryId" header="Category"></Column>
+    <Column field="price" header="Price"></Column>
+    <Column field="move" header="Move"></Column>
+    <Column field="tickerId" header="Ticket Id"></Column>
+    <Column field="datetime" header="Datetime"></Column>
+  </DataTable>
 </template>
 
 <script setup lang="ts">
 import { ref, computed, toRefs } from 'vue';
 import { type Spot } from '@/models/SpotModels'
+import Column from "primevue/column";
+import DataTable from "primevue/datatable";
 
 const props = defineProps<{ data: Spot[] }>();
 const { data } = toRefs(props)

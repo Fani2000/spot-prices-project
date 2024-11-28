@@ -4,7 +4,7 @@ import ContactView from '@/views/ContactView.vue'
 import VenuesView from '@/views/VenuesView.vue'
 
 const router = createRouter({
-  history: createWebHistory(import.meta.url),
+  history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes: [
     { path: '/', name: 'Landing', component: LandingView },
     { path: '/contact', name: 'Contact', component: ContactView },
