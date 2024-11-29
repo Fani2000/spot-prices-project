@@ -1,50 +1,83 @@
 <template>
-    <div>
-      <h1>Workshops</h1>
-      <ul>
-        <li
-          v-for="venue in availableVenues"
-          :key="venue.id"
-        >
-          {{ venue.name }} - {{ venue.date }}
-          <Button label="Book" v-if="venue.available" @click="bookWorkshop(venue.name, venue.date)">
-          </Button>
-          <span v-else>Sold Out</span>
-        </li>
-      </ul>
-    </div>
-  </template>
-  
-  <script setup lang="ts">
-  import { ref, computed } from 'vue';
-  import axios from 'axios';
-  import { Button } from 'primevue'
-  
-  interface Venue {
-    id: number;
-    name: string;
-    date: string;
-    available: boolean;
+  <div class="container p-4">
+    <h1 class="text-center text-3xl font-bold mb-8">Workshop Venues</h1>
+
+    <!-- PrimeVue DataTable -->
+    <DataTable :value="venues" class="shadow-md rounded-lg">
+      <Column field="venue_name" header="Venue Name"></Column>
+      <Column field="date" header="Date"></Column>
+      <Column header="Status">
+        <template #body="slotProps">
+          <span>{{ slotProps.data.available ? 'Available' : 'Sold Out' }}</span>
+        </template>
+      </Column>
+      <Column header="Action">
+        <template #body="slotProps">
+          <Button 
+            :disabled="!slotProps.data.available"
+            label="Book" 
+            @click="bookWorkshop(slotProps.data.id)"
+          ></Button>
+        </template>
+      </Column>
+    </DataTable>
+  </div>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import DataTable from 'primevue/datatable';
+import Column from 'primevue/column';
+import Button from 'primevue/button';
+
+interface Venue {
+  id: number;
+  venue_name: string;
+  date: string;
+  available: boolean;
+}
+
+const venues = ref<Venue[]>([]);
+
+async function fetchVenues() {
+  try {
+    const response = await axios.get('http://localhost:5000/api/book');
+    console.log(response.data)
+    venues.value = response.data;
+  } catch (error) {
+    console.error('Error fetching venues:', error);
+    alert('Failed to load venues');
   }
-  
-  const venues = ref<Venue[]>([
-    { id: 1, name: 'Workshop A', date: '2024-12-01', available: true },
-    { id: 2, name: 'Workshop B', date: '2024-12-02', available: false },
-  ]);
-  
-  const availableVenues = computed(() => {
-    return venues.value.filter((venue) => venue.available);
-  });
-  
-  async function bookWorkshop(name: string, date: string) {
-    // try {
-    //   await axios.post('https://your-live-api.com/api/book', { venueName: name, date });
-    //   alert('Workshop booked successfully!');
-    //   const venue = venues.value.find((v) => v.name === name && v.date === date);
-    //   if (venue) venue.available = false;
-    // } catch (err) {
-    //   alert('Booking failed!');
-    // }
+}
+
+async function bookWorkshop(id: number) {
+  console.log("ID: ", id)
+  try {
+    await axios.post(`http://localhost:5000/api/book/${id}`);
+    alert('Workshop booked successfully!');
+    const venue = venues.value.find((v) => v.id === id);
+    if (venue) venue.available = false; // Update availability locally
+  } catch (error) {
+    console.error('Error booking workshop:', error);
+    alert('Booking failed!');
   }
-  </script>
-  
+}
+
+onMounted(fetchVenues);
+</script>
+
+<style scoped>
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.shadow-md {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.rounded-lg {
+  border-radius: 0.5rem;
+}
+</style>
