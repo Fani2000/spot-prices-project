@@ -7,7 +7,7 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_BASE_URL),
   routes: [
     { path: '/', name: 'Landing', component: LandingView },
-    { path: '/contact', name: 'Contact', component: ContactView },
+    { path: '/contacts', name: 'Contact', component: ContactView },
     { path: '/venues', name: 'Venues', component: VenuesView },
   ],
 })
