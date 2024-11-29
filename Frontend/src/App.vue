@@ -12,8 +12,13 @@ const items = ref([
   },
   {
     label: 'Venues',
-    icon: 'pi pi-star',
+    icon: 'pi pi-map-marker',
     url: "/venues"
+  },
+  {
+    label: 'Contacts',
+    icon: 'pi pi-address-book',
+    url: "/contacts"
   },
 ]);
 </script>

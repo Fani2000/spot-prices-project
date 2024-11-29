@@ -1,40 +1,31 @@
 <template>
-    <div class="container full-height px-8 mx-auto flex flex-col gap-7">
-      <div>Introdution</div>
-        <SpotPricesTable :data="spots" />
-      <div>
-        <Button>
-          <router-link to="/contact">
-            Contacts
-          </router-link>
-        </Button>
-      </div>
+  <div class="container mx-auto h-screen py-10 px-14 bg-gray-100 flex flex-col gap-10">
+    <div class="text-center text-gray-800">
+      <TheIntroduction />
     </div>
+
+    <div class="w-full bg-white shadow-md rounded-lg overflow-hidden">
+      <SpotPricesTable :data="spotPrices" />
+    </div>
+  </div>
 </template>
   
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import {Button} from 'primevue'
+import { onMounted } from 'vue';
 import SpotPricesTable from '@/components/SpotPricesTable.vue';
-import { type Spot } from '@/models/SpotModels'
+import {storeToRefs} from "pinia";
+import {useSpotPriceStore} from "@/stores/spotPrices.store";
+import TheIntroduction from "@/components/TheIntroduction.vue";
 
-const spots = ref<Spot[]>([]);
+const {initializeSpotPrices} = useSpotPriceStore()
+const {spotPrices} = storeToRefs(useSpotPriceStore())
 
 onMounted(async () => {
-    const { data } = await axios.get<any>('https://api.sharenet.co.za/api/v1/px2/spots');
-    console.log('Data: ', data.spots)
-    spots.value = data.spots.map((x:any) => ({
-      "code": x.code,
-      "fullName": x.fullName,
-      "categoryName": x.categoryName,
-      "categoryId": x.categoryId,
-      "price": x.price,
-      "move": x.move,
-      "pmove": x.pmove,
-      "tickerId": x.tickerId,
-      "datetime": x.datetime
-    }));
+  
+  if(spotPrices.value.length > 0) return;
+  
+  await initializeSpotPrices(); 
+  
 });
 </script>
   
