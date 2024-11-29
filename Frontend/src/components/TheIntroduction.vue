@@ -5,7 +5,7 @@
     </p>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // No script logic required for this introductory component
 </script>
 

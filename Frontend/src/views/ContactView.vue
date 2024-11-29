@@ -8,7 +8,7 @@
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3464.987897934433!2d31.058422381722995!3d-29.7201098108559!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1ef70593eb9fd011%3A0xb9e60b9201d796af!2s34%2C%2030%20Meridian%20Dr%2C%20Umhlanga%20Ridge%2C%20uMhlanga%2C%204320!5e0!3m2!1sen!2sza!4v1732866050365!5m2!1sen!2sza"
           frameborder="0"
           style="border:0;"
-          allowfullscreen=""
+          :allowfullscreen="undefined"
           aria-hidden="false"
           tabindex="0">
       </iframe>
@@ -29,7 +29,7 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import Card from 'primevue/card';
 
 // Register the component if using Options API

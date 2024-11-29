@@ -12,6 +12,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app-network
 
   backend:
     build:
@@ -26,6 +28,8 @@ services:
       DB_NAME: workshops_db
     ports:
       - "5000:5000"
+    networks:
+      - app-network
 
   frontend:
     build:
@@ -35,6 +39,8 @@ services:
       - "8080:80"
     depends_on:
       - backend
+    networks:
+      - app-network
 
   portainer:
     image: portainer/portainer-ce:latest
@@ -45,7 +51,12 @@ services:
       - portainer_data:/data
     ports:
       - "9091:9000"
+    networks:
+      - app-network
 
 volumes:
   postgres_data:
   portainer_data:
+
+networks:
+  app-network:
